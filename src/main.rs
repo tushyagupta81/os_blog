@@ -5,7 +5,7 @@
 #![reexport_test_harness_main = "test_main"]
 
 use core::panic::PanicInfo;
-use os_blog::println;
+use os_blog::{hlt_loop, println};
 
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
@@ -17,7 +17,7 @@ pub extern "C" fn _start() -> ! {
         stack_overflow();
     }
 
-    stack_overflow();
+    // stack_overflow();
 
     // x86_64::instructions::interrupts::int3();
 
@@ -25,14 +25,14 @@ pub extern "C" fn _start() -> ! {
     test_main();
 
     println!("It didn't crash");
-    loop {}
+    hlt_loop();
 }
 
 #[cfg(not(test))]
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
     println!("{}", info);
-    loop {}
+    hlt_loop();
 }
 
 #[cfg(test)]
